@@ -39,5 +39,5 @@ If the driver has nothing stored in it, it will return _null_
 
 Also, when you retrieve your data, it will be erased from the stack, so if you are using it again, make sure to store it back.
 ```php
-$data = $db->retrieve($array);
+$data = $db->retrieve();
 ```
