@@ -1,6 +1,9 @@
 <?php
 namespace Rumd3x\Persistence;
 
+/**
+ * This class handles a file
+ */
 class FileHandler
 {
     /**
@@ -13,6 +16,11 @@ class FileHandler
         $this->file = $file;
     }
 
+    /**
+     * If the opened file has a valid resource handle
+     *
+     * @return bool
+     */
     private function hasValidHandle()
     {
         return $this->file->getHandle() !== false;
@@ -29,7 +37,7 @@ class FileHandler
     }
 
     /**
-     * Retrieves first line from the file and erases it from it
+     * Retrieves first line from the file and erases it
      *
      * @return String
      */
@@ -63,6 +71,12 @@ class FileHandler
         return $firstline;
     }
 
+    /**
+     * Appends an string to the end of the file
+     *
+     * @param String $data
+     * @return self
+     */
     public function append(String $data)
     {
         file_put_contents($this->file->getPath(), "{$data}\r\n", FILE_APPEND | LOCK_EX);

@@ -1,14 +1,35 @@
 <?php
 namespace Rumd3x\Persistence;
 
+/**
+ * This class holds the implementation of a file
+ */
 class File implements FileInterface
 {
     const READONLY = 'r';
     const WRITEONLY = 'c';
     const READWRITE = 'c+';
 
+    /**
+     * Holds the path to the file
+     *
+     * @var String
+     */
     private $path;
+
+    /**
+     * Holds the resource handle for the file in the SO
+     * Not to be confused with the FileHandler class
+     *
+     * @var Resource
+     */
     private $handle;
+
+    /**
+     * Holds the mode in which the file is open
+     *
+     * @var String
+     */
     private $mode;
 
     public function __construct(String $path, String $mode = File::READWRITE)
