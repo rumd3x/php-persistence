@@ -6,6 +6,9 @@ namespace Rumd3x\Persistence;
  */
 class Engine
 {
+    /**
+     * @var FileHandler
+     */
     private $driver;
 
     public function __construct(String $driver)
@@ -39,6 +42,22 @@ class Engine
             return null;
         }
 
-        return unserialize($data);
+        $unserialized = @unserialize($data);
+        if ($unserialized === false) {
+            $this->clear();
+            return null;
+        }
+
+        return $unserialized;
+    }
+
+    /**
+     * Removes all stored data
+     *
+     * @return bool
+     */
+    public function clear()
+    {
+        return $this->driver->cleanFile();
     }
 }

@@ -1,6 +1,8 @@
 <?php
 namespace Rumd3x\Persistence;
 
+use Exception;
+
 /**
  * This class handles a file
  */
@@ -16,6 +18,14 @@ class FileHandler
         $this->file = $file;
     }
 
+    public function __destruct()
+    {
+        $this->unlock();
+        if ($this->hasValidHandle()) {
+            $this->file->close();
+        }
+    }
+
     /**
      * If the opened file has a valid resource handle
      *
@@ -23,17 +33,48 @@ class FileHandler
      */
     private function hasValidHandle()
     {
-        return $this->file->getHandle() !== false;
+        $handle = $this->file->getHandle();
+        $isHandleInvalid = $handle === false;
+        $isHandleInvalid = $isHandleInvalid || !is_resource($handle);
+        $isHandleInvalid = $isHandleInvalid || get_resource_type($handle) === 'Unknown';
+        return $isHandleInvalid;
     }
 
+    /**
+     * @return bool
+     * @throws LockException
+     */
     private function lock()
     {
-        return flock($this->file->getHandle(), LOCK_EX);
+        if (!flock($this->file->getHandle(), LOCK_EX)) {
+            throw new LockException($this, "Error Locking File", 1);
+        }
+        return true;
     }
 
+    /**
+     * @return bool
+     * @throws LockException
+     */
     private function unlock()
     {
-        return flock($this->file->getHandle(), LOCK_UN);
+        if (!flock($this->file->getHandle(), LOCK_UN)) {
+            throw new LockException($this, "Error Unlocking File", 2);
+        }
+        return true;
+    }
+
+    /**
+     * Truncates the file
+     *
+     * @return bool
+     */
+    public function cleanFile()
+    {
+        $this->lock();
+        $result = $this->file->truncate();
+        $this->unlock();
+        return $result;
     }
 
     /**
