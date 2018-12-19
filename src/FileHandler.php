@@ -37,7 +37,7 @@ class FileHandler
         $isHandleInvalid = $handle === false;
         $isHandleInvalid = $isHandleInvalid || !is_resource($handle);
         $isHandleInvalid = $isHandleInvalid || get_resource_type($handle) === 'Unknown';
-        return $isHandleInvalid;
+        return !$isHandleInvalid;
     }
 
     /**
