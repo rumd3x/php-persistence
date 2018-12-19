@@ -10,10 +10,15 @@ class Engine
      * @var FileHandler
      */
     private $driver;
-
+    
+    /**
+     * Driver should be the full path + file name without extension.
+     *
+     * @param string $driver
+     */
     public function __construct(String $driver)
     {
-        $this->driver = __DIR__ . '/' . $driver;
+        $this->driver = $driver;
         $this->handler = new FileHandler(new File("{$this->driver}.pe"));
     }
 
