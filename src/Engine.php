@@ -63,6 +63,6 @@ class Engine
      */
     public function clear()
     {
-        return $this->driver->cleanFile();
+        return $this->handler->cleanFile();
     }
 }
