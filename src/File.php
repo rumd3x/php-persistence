@@ -52,7 +52,7 @@ class File implements FileInterface
 
     public function close()
     {
-        fclose($this->handle);
+        @fclose($this->handle);
         return $this;
     }
 
